@@ -63,6 +63,54 @@ instance_groups:
         value: hola
       - name: ADIOS
         value: bye
+      security_groups:
+      - name: sec1
+        state: present
+        context: running
+        context_state: present
+        rules:
+        - name: "allow-proxy"
+          protocol: tcp
+          destination: "10.20.0.1/0"
+          ports: "8080"
+      quotas:
+      - name: quota1
+        state: present
+        total_services: 100
+        total_routes: 1000
+        memory_limit: 1000
+      users:
+      - name: pepe@hola.com
+        state: present
+        password: hola
+        given_name: Pepe
+        family_name: Family
+      - name: claudio@hola.com
+        state: present
+        password: hola
+        given_name: Claudio
+        family_name: Family
+      orgs:
+      - name: org1
+        quota: quota1
+        state: present
+        users:
+        - name: pepe@hola.com
+        managers:
+        - name: claudio@hola.com
+        spaces:
+        - name: test
+        - name: second
+      - name: org2
+        state: present
+        quota: quota1
+        spaces:
+        - name: live
+          state: present
+          managers:
+          - name: claudio@hola.com
+          security_groups:
+          - name: sec1
 
 update:
   canaries: 1
@@ -117,7 +165,7 @@ Finished        2016-12-06 23:31:02 UTC
 Duration        00:03:04
 
 [stdout]
-* 6641: /var/vcap/packages/ansible/bin/ansible-playbook  -i /var/vcap/jobs/ansible-cfsetup/ansible/inventory /var/vcap/jobs/ansible-cfsetup/ansible/deploy.yml
+* 6637: /var/vcap/packages/ansible/bin/ansible-playbook  -i /var/vcap/jobs/ansible-cfsetup/ansible/inventory /var/vcap/jobs/ansible-cfsetup/ansible/deploy.yml
 
 PLAY [Cloud Foundry settings playbook] *****************************************
 
@@ -125,30 +173,178 @@ TASK [cf : Check PIP dependencies for ansible modules] *************************
 ok: [api.test.cf.springer-sbm.com -> localhost] => (item={'key': u'cfconfigurator', 'value': u'0.2.1'})
 
 TASK [cf : Config - Set global feature flags] **********************************
-changed: [api.test.cf.springer-sbm.com -> localhost] => (item={u'name': u'user_org_creation', u'value': True})
+ok: [api.test.cf.springer-sbm.com -> localhost] => (item={u'name': u'user_org_creation', u'value': True})
 
 TASK [cf : Config - Set global running environment variables group] ************
-changed: [api.test.cf.springer-sbm.com -> localhost] => (item={u'name': u'HOLA', u'value': u'hola'})
-changed: [api.test.cf.springer-sbm.com -> localhost] => (item={u'name': u'ADIOS', u'value': u'bye'})
+ok: [api.test.cf.springer-sbm.com -> localhost] => (item={u'name': u'HOLA', u'value': u'hola'})
+ok: [api.test.cf.springer-sbm.com -> localhost] => (item={u'name': u'ADIOS', u'value': u'bye'})
 
 TASK [cf : Config - Set global staging environment variables group] ************
 
 TASK [cf : Config - Set global shared domains] *********************************
 
 TASK [cf : Secgroups - Setting global security groups] *************************
+included: /var/vcap/data/packages/ansible-cfsetup/130e121141cce7268e2651986b21eae4d6af91c9.1-bfdc6e9241b17fb425b68848d61379589ebb49e6/roles/cf/tasks/secgroup.yml for api.test.cf.springer-sbm.com
+
+TASK [cf : Secgroup - Procesing security group sec1] ***************************
+ok: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Secgroup - Facts] ***************************************************
+ok: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Secgroup - Managing security group sec1: present] *******************
+changed: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Secgroup - Setting up security group rules] *************************
+changed: [api.test.cf.springer-sbm.com -> localhost] => (item=(0, {u'destination': u'10.20.0.1/0', u'protocol': u'tcp', u'name': u'allow-proxy', u'ports': u'8080'}))
+
+TASK [cf : Secgroup - Managing sec1 in space] **********************************
 
 TASK [cf : Secgroups - Managing default security groups] ***********************
+changed: [api.test.cf.springer-sbm.com -> localhost] => (item={u'rules': [{u'destination': u'10.20.0.1/0', u'protocol': u'tcp', u'name': u'allow-proxy', u'ports': u'8080'}], u'state': u'present', u'name': u'sec1'
+, u'context': u'running', u'context_state': u'present'})
 
 TASK [cf : Quotas - Processing quota definitions] ******************************
+changed: [api.test.cf.springer-sbm.com -> localhost] => (item={u'memory_limit': 1000, u'state': u'present', u'total_routes': 1000, u'name': u'quota1', u'total_services': 100})
 
 TASK [cf : Users - Managing users] *********************************************
+changed: [api.test.cf.springer-sbm.com -> localhost] => (item={u'family_name': u'Family', u'state': u'present', u'password': u'hola', u'name': u'pepe@hola.com', u'given_name': u'Pepe'})
+changed: [api.test.cf.springer-sbm.com -> localhost] => (item={u'family_name': u'Family', u'state': u'present', u'password': u'hola', u'name': u'claudio@hola.com', u'given_name': u'Claudio'})
 
 TASK [cf : Orgs - Setting up organizations] ************************************
+included: /var/vcap/data/packages/ansible-cfsetup/130e121141cce7268e2651986b21eae4d6af91c9.1-bfdc6e9241b17fb425b68848d61379589ebb49e6/roles/cf/tasks/org.yml for api.test.cf.springer-sbm.com
+included: /var/vcap/data/packages/ansible-cfsetup/130e121141cce7268e2651986b21eae4d6af91c9.1-bfdc6e9241b17fb425b68848d61379589ebb49e6/roles/cf/tasks/org.yml for api.test.cf.springer-sbm.com
+
+TASK [cf : Org - Procesing organization org1] **********************************
+ok: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Org - Facts] ********************************************************
+ok: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Org - Defining organization org1] ***********************************
+changed: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Org - Managing spaces for org1] *************************************
+included: /var/vcap/data/packages/ansible-cfsetup/130e121141cce7268e2651986b21eae4d6af91c9.1-bfdc6e9241b17fb425b68848d61379589ebb49e6/roles/cf/tasks/space.yml for api.test.cf.springer-sbm.com
+included: /var/vcap/data/packages/ansible-cfsetup/130e121141cce7268e2651986b21eae4d6af91c9.1-bfdc6e9241b17fb425b68848d61379589ebb49e6/roles/cf/tasks/space.yml for api.test.cf.springer-sbm.com
+
+TASK [cf : Space - Procesing space test in org1 organization] ******************
+ok: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Space - Facts] ******************************************************
+ok: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Space - Managing space org1:test present] ***************************
+changed: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Space - Managing security groups for org1:test] *********************
+
+TASK [cf : Space - Assigning developers to org1:test] **************************
+
+TASK [cf : Space - Assigning managers to space org1:test] **********************
+
+TASK [cf : Space - Assigning auditors to space org1:test] **********************
+
+TASK [cf : Space - Procesing space second in org1 organization] ****************
+ok: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Space - Facts] ******************************************************
+ok: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Space - Managing space org1:second present] *************************
+changed: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Space - Managing security groups for org1:second] *******************
+
+TASK [cf : Space - Assigning developers to org1:second] ************************
+
+TASK [cf : Space - Assigning managers to space org1:second] ********************
+
+TASK [cf : Space - Assigning auditors to space org1:second] ********************
+
+TASK [cf : Org - Deleting spaces for org1] *************************************
+
+TASK [cf : Org - Deleting organization org1] ***********************************
+
+TASK [cf : Org - Create private domains to organization org1] ******************
+
+TASK [cf : Org - Assigning users to organization org1] *************************
+changed: [api.test.cf.springer-sbm.com -> localhost] => (item={u'name': u'pepe@hola.com'})
+changed: [api.test.cf.springer-sbm.com -> localhost] => (item={u'name': u'claudio@hola.com'})
+
+TASK [cf : Org - Assigning managers to organization org1] **********************
+changed: [api.test.cf.springer-sbm.com -> localhost] => (item={u'name': u'claudio@hola.com'})
+
+TASK [cf : Org - Assigning auditors to organization org1] **********************
+
+TASK [cf : Org - Assigning billing_managers to organization org1] **************
+
+TASK [cf : Org - Assigning default organization org1 for requested users] ******
+
+TASK [cf : Org - Procesing organization org2] **********************************
+ok: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Org - Facts] ********************************************************
+ok: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Org - Defining organization org2] ***********************************
+changed: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Org - Managing spaces for org2] *************************************
+included: /var/vcap/data/packages/ansible-cfsetup/130e121141cce7268e2651986b21eae4d6af91c9.1-bfdc6e9241b17fb425b68848d61379589ebb49e6/roles/cf/tasks/space.yml for api.test.cf.springer-sbm.com
+
+TASK [cf : Space - Procesing space live in org2 organization] ******************
+ok: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Space - Facts] ******************************************************
+ok: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Space - Managing space org2:live present] ***************************
+changed: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Space - Managing security groups for org2:live] *********************
+included: /var/vcap/data/packages/ansible-cfsetup/130e121141cce7268e2651986b21eae4d6af91c9.1-bfdc6e9241b17fb425b68848d61379589ebb49e6/roles/cf/tasks/secgroup.yml for api.test.cf.springer-sbm.com
+
+TASK [cf : Secgroup - Procesing security group sec1] ***************************
+ok: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Secgroup - Facts] ***************************************************
+ok: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Secgroup - Managing security group sec1: present] *******************
+
+TASK [cf : Secgroup - Setting up security group rules] *************************
+
+TASK [cf : Secgroup - Managing sec1 in space live] *****************************
+changed: [api.test.cf.springer-sbm.com -> localhost]
+
+TASK [cf : Space - Assigning developers to org2:live] **************************
+
+TASK [cf : Space - Assigning managers to space org2:live] **********************
+changed: [api.test.cf.springer-sbm.com -> localhost] => (item={u'name': u'claudio@hola.com'})
+
+TASK [cf : Space - Assigning auditors to space org2:live] **********************
+
+TASK [cf : Org - Deleting spaces for org2] *************************************
+
+TASK [cf : Org - Deleting organization org2] ***********************************
+
+TASK [cf : Org - Create private domains to organization org2] ******************
+
+TASK [cf : Org - Assigning users to organization org2] *************************
+
+TASK [cf : Org - Assigning managers to organization org2] **********************
+
+TASK [cf : Org - Assigning auditors to organization org2] **********************
+
+TASK [cf : Org - Assigning billing_managers to organization org2] **************
+
+TASK [cf : Org - Assigning default organization org2 for requested users] ******
 
 PLAY RECAP *********************************************************************
-api.test.cf.springer-sbm.com : ok=3    changed=2    unreachable=0    failed=0   
+api.test.cf.springer-sbm.com : ok=38   changed=14   unreachable=0    failed=0
 
-Playbook run took 0 days, 0 hours, 0 minutes, 2 seconds
+Playbook run took 0 days, 0 hours, 0 minutes, 16 seconds
 
 [stderr]
 None
