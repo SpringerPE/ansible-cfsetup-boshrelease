@@ -1,0 +1,3 @@
+[submodule "src/ansible-cloudfoundry"]
+	path = src/ansible-cloudfoundry
+	url = git@github.com:SpringerPE/ansible-cloudfoundry.git
