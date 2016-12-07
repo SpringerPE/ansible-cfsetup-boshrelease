@@ -1,0 +1,7 @@
+---
+name: ansible-cfsetup
+
+dependencies: []
+
+files:
+- ansible-cloudfoundry/**/*

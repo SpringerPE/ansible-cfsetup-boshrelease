@@ -1,0 +1,50 @@
+---
+name: ansible-cfsetup
+
+description: "Ansible playbooks and roles to manage User, Quotas, Organizations, Spaces, ..."
+
+packages:
+- ansible-cfsetup
+
+templates:
+  bin/pre-start: bin/pre-start
+  ansible/env.sh: ansible/env.sh
+  ansible/inventory.erb: ansible/inventory
+  ansible/group_vars/cf.json.erb: ansible/group_vars/cf.json
+  ansible/deploy.yml.erb: ansible/deploy.yml
+
+properties:
+  ansible_cfsetup.credentials:
+    description: List of CloudFoundry credentials to apply the configuration
+    example:
+    - api: "https://test.api.cloudfoundry.url"
+      admin: admin
+      password: password
+  ansible_cfsetup.parallel:
+    description: Level of parallelism for applying settings to different apis
+    default: 1
+  ansible_cfsetup.feature_flags:
+    description: Cloud Foundry feature flags
+    default: []
+  ansible_cfsetup.staging_environment_variables:
+    description: Cloud Foundry environment variables for staging
+    default: []
+  ansible_cfsetup.running_environment_variables:
+    description: Cloud Foundry environment variables for running
+    default: []
+  ansible_cfsetup.shared_domains:
+    description: Cloud Foundry global shared domains
+    default: []
+  ansible_cfsetup.security_groups:
+    description: Cloud Foundry global security groups
+    default: []
+  ansible_cfsetup.quotas:
+    description: Cloud Foundry quotas
+    default: []
+  ansible_cfsetup.users:
+    description: Cloud Foundry quotas
+    default: []
+  ansible_cfsetup.orgs:
+    description: Cloud Foundry organizations and spaces. It defines links with quotas and security groups
+    default: []
+

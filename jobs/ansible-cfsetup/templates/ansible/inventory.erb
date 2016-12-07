@@ -1,0 +1,33 @@
+[cf:children]
+environments
+
+[environments:children]
+# You can add here more CF environments, they are just names!
+# and for each enviroment you can override the variables
+# defined in `group_vars/cf.yml` by creating a new file
+# with the same name. The manifest `group_vars/cf.yml` it will be 
+# applied as a default variables (for example for feature flags,
+# environment variables, etc) for all children like this one,
+# and then by having a file with the same name as the children
+# (`group_vars/test.yml` in this example) overwrite the variable
+# `cf_orgs` and define specific organizations for this CF.
+<% p("ansible_cfsetup.credentials").each do |cf| %>
+<%= cf["name"] %>
+<% end %>
+
+
+<% p("ansible_cfsetup.credentials").each do |cf| %>
+[<%= cf["name"] %>]
+<%= URI.parse(cf["api"]).host.downcase %>
+
+[<%= cf["name"] %>:vars]
+cf_admin_user=<%= cf["admin"] %>
+cf_admin_password=<%= cf["password"] %>
+cf_api=<%= cf["api"] %>
+<% end %>
+
+
+# Client where run the playbooks
+[client]
+localhost ansible_python_interpreter=/var/vcap/packages/python27/bin/python ansible_connection=local ansible_become=false
+

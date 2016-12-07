@@ -1,0 +1,12 @@
+<%=
+  JSON.dump({
+    'cf_feature_flags' => p('ansible_cfsetup.feature_flags'),
+    'cf_staging_environment_variables' => p('ansible_cfsetup.staging_environment_variables'),
+    'cf_running_environment_variables' => p('ansible_cfsetup.running_environment_variables'),
+    'cf_shared_domains' => p('ansible_cfsetup.shared_domains'),
+    'cf_security_groups' => p('ansible_cfsetup.security_groups'),
+    'cf_quotas' => p('ansible_cfsetup.quotas'),
+    'cf_users' => p('ansible_cfsetup.users'),
+    'cf_orgs' => p('ansible_cfsetup.orgs')
+  })
+%>

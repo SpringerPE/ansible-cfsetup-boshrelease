@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# abort script on any command that exits with a non zero value
+set -e -x
+
+FOLDER=ansible-cloudfoundry
+
+echo "Adding Ansible roles ..."
+cp -av ${FOLDER}/* ${BOSH_INSTALL_TARGET}/

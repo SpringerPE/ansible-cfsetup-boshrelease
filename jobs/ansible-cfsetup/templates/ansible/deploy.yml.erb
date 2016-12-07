@@ -1,0 +1,15 @@
+---
+# All variables are defined in the inventory (or group_vars), so you can test
+# this playbook offline with a fake inventory, or reuse in other places
+
+# This playbook was created to run as errand by ansible-deploy job
+# available in ansible release, so it will only be triggered by that action.
+# The idea is setup/deploy all the nodes statically defined instead of
+# run each time one node is being added.
+
+- name: Cloud Foundry settings playbook
+  hosts: cf
+  serial: <%= p("ansible_cfsetup.parallel", 1) %>
+  gather_facts: false
+  roles:
+  - role: cf
