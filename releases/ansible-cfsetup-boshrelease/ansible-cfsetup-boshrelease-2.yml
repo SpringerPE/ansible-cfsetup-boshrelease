@@ -1,0 +1,20 @@
+---
+packages:
+- name: ansible-cfsetup
+  version: 5a84a0b7eda4fd1d8676552a52bd0c70be62a44c
+  fingerprint: 5a84a0b7eda4fd1d8676552a52bd0c70be62a44c
+  sha1: 09a16149265e47c947ca3a6b672fead709b4ceab
+  dependencies: []
+jobs:
+- name: ansible-cfsetup
+  version: 774f5c58fcf5f83e86109912379e2c2c00babf90
+  fingerprint: 774f5c58fcf5f83e86109912379e2c2c00babf90
+  sha1: 4692a5c83051c5ebf0c4195bbb179b46a3ec9cf2
+license:
+  version: d6197361f9a5324b35e06913893d595a49dbd593
+  fingerprint: d6197361f9a5324b35e06913893d595a49dbd593
+  sha1: 20286d27e95e5bd92433da3959751b616075699a
+commit_hash: 204204aa
+uncommitted_changes: true
+name: ansible-cfsetup-boshrelease
+version: '2'
