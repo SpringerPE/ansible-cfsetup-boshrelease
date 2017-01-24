@@ -16,5 +16,5 @@ license:
   sha1: 20286d27e95e5bd92433da3959751b616075699a
 commit_hash: 204204aa
 uncommitted_changes: true
-name: ansible-cfsetup-boshrelease
+name: ansible-cfsetup
 version: '2'
