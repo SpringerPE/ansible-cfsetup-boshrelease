@@ -3,7 +3,7 @@
 Add-on release with ansible playbooks to manage Cloud Foundry resources:
 users, security groups, quotas, feature flags, environment variables, organizations and spaces
 
-The core functionality is provided by https://github.com/SpringerPE/ansible-cloudfoundry,
+The core functionality is provided by https://github.com/SpringerPE/ansible-cloudfoundry-role,
 this is just an add-on to run the that ansible role in a Bosh errand.
 
 
@@ -366,11 +366,13 @@ git submodule init
 git submodule update
 ```
 
-All the functionality is provided by: https://github.com/SpringerPE/ansible-cloudfoundry
+All the functionality is provided by: https://github.com/SpringerPE/ansible-cloudfoundry-role
 The role is re-usable outside this release by re-defining a inventory with the variables
 and a group_vars folder. Have a look at the examples on its repository.
 
 All actions/playbooks (thanks to ansible) are idempotent.
+
+To create a final release run: `./bosh_final_release`
 
 
 # Author
