@@ -1,0 +1,3 @@
+[submodule "src/ansible-cloudfoundry-role"]
+	path = src/ansible-cloudfoundry-role
+	url = git@github.com:SpringerPE/ansible-cloudfoundry-role.git
